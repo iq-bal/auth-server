@@ -2,31 +2,38 @@
 
 ## Overview
 
-This is a Node.js API that implements authentication and authorization using **JWT (JSON Web Tokens)**. It includes routes for user registration, login, access token generation, refresh token generation, token-based protection of routes, and user logout. The system utilizes access tokens with short expiration times for security, and refresh tokens for generating new access tokens without re-authenticating users.
+This project implements two Node.js servers: one for **authentication** (`authServer`) and another for normal protected routes. The servers use **JWT (JSON Web Tokens)** for authentication and authorization, enabling secure access to protected resources. The API includes features like user registration, login, access token generation, refresh token generation, token-based protection of routes, and user logout. 
+
+### Key Features:
+- Access tokens with short expiration times for security.
+- Refresh tokens for renewing access tokens without re-authenticating users.
+- Middleware for protecting routes using access tokens.
 
 ## Table of Contents
 
 - [Environment Variables](#environment-variables)
 - [Installation](#installation)
-- [Endpoints](#endpoints)
+- [Auth Server Endpoints](#auth-server-endpoints)
   - [Register a User](#register-a-user)
   - [Login](#login)
   - [Generate New Access Token](#generate-new-access-token)
-  - [Protected Route](#protected-route)
   - [Logout](#logout)
+- [Normal Server Endpoints](#normal-server-endpoints)
+  - [Protected Route](#protected-route)
 - [Middleware](#middleware)
   - [Authenticate Token](#authenticate-token)
 
 ## Environment Variables
 
-The API requires the following environment variables. Set these up in a `.env` file.
+Both servers require the following environment variables. Set these up in a `.env` file.
 
 ```plaintext
 ACCESS_TOKEN_SECRET=youraccesstokensecrethere
 REFRESH_TOKEN_SECRET=yourrefreshtokensecrethere
 ACCESS_TOKEN_LIFETIME=15s  # Lifetime of the access token (e.g., 15 seconds)
 REFRESH_TOKEN_LIFETIME=7d   # Lifetime of the refresh token (e.g., 7 days)
-PORT=4000                   # Optional, the port the server runs on
+PORT=4000                   # Port for the normal server (optional)
+AUTH_SERVER_PORT=6000        # Port for the auth server (optional)
 ```
 
 ## Installation
@@ -51,20 +58,31 @@ PORT=4000                   # Optional, the port the server runs on
 
 4. Set up the environment variables in a `.env` file as described above.
 
-5. Start the server:
+5. Start the authentication server:
    ```bash
-   npm run dev
+   npm run authServer
    ```
 
-The server will run on `http://localhost:4000` by default.
+6. Start the normal server:
+   ```bash
+   npm run normalServer
+   ```
 
-## Endpoints
+By default:
+- The authentication server will run on `http://localhost:6000`.
+- The normal server will run on `http://localhost:4000`.
+
+---
+
+## Auth Server Endpoints
+
+These endpoints manage user authentication and token generation.
 
 ### 1. Register a User
 
 **Endpoint**: `POST /register`
 
-Registers a new user by accepting a `username` and `password`. The password is hashed using `bcryptjs`.
+Registers a new user with a `username` and `password`. The password is hashed using `bcryptjs`.
 
 - **Request Body**:
 
@@ -130,7 +148,32 @@ Uses the refresh token to generate a new access token.
   - `403`: Invalid refresh token
   - `500`: Internal server error
 
-### 4. Protected Route
+### 4. Logout
+
+**Endpoint**: `DELETE /logout`
+
+Invalidates the refresh token to log the user out.
+
+- **Request Body**:
+
+  ```json
+  {
+    "refreshToken": "yourRefreshToken"
+  }
+  ```
+
+- **Responses**:
+  - `200`: Logged out successfully
+  - `404`: Refresh token not found
+  - `500`: Internal server error
+
+---
+
+## Normal Server Endpoints
+
+This server handles routes that require token-based authentication.
+
+### 1. Protected Route
 
 **Endpoint**: `GET /protected`
 
@@ -157,24 +200,7 @@ Accesses a protected route that requires a valid access token. This route demons
   - `403`: Invalid token
   - `500`: Internal server error
 
-### 5. Logout
-
-**Endpoint**: `DELETE /logout`
-
-Invalidates the refresh token to log the user out.
-
-- **Request Body**:
-
-  ```json
-  {
-    "refreshToken": "yourRefreshToken"
-  }
-  ```
-
-- **Responses**:
-  - `200`: Logged out successfully
-  - `404`: Refresh token not found
-  - `500`: Internal server error
+---
 
 ## Middleware
 
@@ -200,6 +226,8 @@ function authenticateToken(req, res, next) {
 
 If the token is valid, the user's information (decoded from the token) is stored in `req.user`, which can be accessed by the route handler.
 
+---
+
 ## Conclusion
 
-This API implements a robust JWT-based authentication and authorization system. Access tokens are short-lived for security, while refresh tokens enable users to stay logged in without repeatedly entering credentials. The system includes secure password storage with bcrypt and protects routes using token-based authentication.
+This project implements two servers that work together to provide secure JWT-based authentication and authorization. The **auth server** handles user registration, login, and token management, while the **normal server** demonstrates how to protect specific routes using access tokens. With short-lived access tokens and long-lived refresh tokens, the system balances security and usability.
