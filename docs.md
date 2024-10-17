@@ -2,9 +2,10 @@
 
 ## Overview
 
-This project implements two Node.js servers: one for **authentication** (`authServer`) and another for normal protected routes. The servers use **JWT (JSON Web Tokens)** for authentication and authorization, enabling secure access to protected resources. The API includes features like user registration, login, access token generation, refresh token generation, token-based protection of routes, and user logout. 
+This project implements two Node.js servers: one for **authentication** (`authServer`) and another for normal protected routes. The servers use **JWT (JSON Web Tokens)** for authentication and authorization, enabling secure access to protected resources. The API includes features like user registration, login, access token generation, refresh token generation, token-based protection of routes, and user logout.
 
 ### Key Features:
+
 - Access tokens with short expiration times for security.
 - Refresh tokens for renewing access tokens without re-authenticating users.
 - Middleware for protecting routes using access tokens.
@@ -41,13 +42,13 @@ AUTH_SERVER_PORT=6000        # Port for the auth server (optional)
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo-url.git
+   git clone https://github.com/iq-bal/auth-server.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd your-project-directory
+   cd auth-server
    ```
 
 3. Install the dependencies:
@@ -59,16 +60,18 @@ AUTH_SERVER_PORT=6000        # Port for the auth server (optional)
 4. Set up the environment variables in a `.env` file as described above.
 
 5. Start the authentication server:
+
    ```bash
    npm run authServer
    ```
 
 6. Start the normal server:
    ```bash
-   npm run normalServer
+   npm run dev
    ```
 
 By default:
+
 - The authentication server will run on `http://localhost:6000`.
 - The normal server will run on `http://localhost:4000`.
 
