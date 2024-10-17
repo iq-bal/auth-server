@@ -49,7 +49,7 @@ You can explore [this JWT Playground](https://jwt.io/) to see how each section o
 ### **JWT Workflow: Authentication and Authorization**
 
 <p>
-    <img src="architecture.png" alt="jwt architechture" width="600">
+    <img src="architecture.png" alt="jwt architechture" width="800">
 </p>
 
 **A diagram depicting JWT architecture (on right)**
