@@ -1,6 +1,6 @@
 # use rest client extentsion in vscode
 
-POST http://localhost:4000/register
+POST http://localhost:6000/register
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:4000/login
+POST http://localhost:6000/login
 Content-Type: application/json
 
 {
@@ -20,20 +20,19 @@ Content-Type: application/json
 
 ###
 GET http://localhost:4000/protected
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJwcml0eSIsImlhdCI6MTcyOTE4Mjc1NCwiZXhwIjoxNzI5MTgyNzY5fQ.LKNQMWa6UWVCqEu4x0Tb1NH4LaUxzGtiXyXEn5pFk_0
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJwcml0eSIsImlhdCI6MTcyOTE4NTg5MywiZXhwIjoxNzI5MTg1OTA4fQ.YM5xykV_HfAGicXojIjj5Kb6TVvk5F8JaFkbLbgQSdc
 ###
-POST http://localhost:4000/token
+POST http://localhost:6000/token
 Content-Type: application/json
 
 {
-    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJwcml0eSIsImlhdCI6MTcyOTE4MzAxNCwiZXhwIjoxNzI5Nzg3ODE0fQ.gSWxlazRNOtVn2NRyPqHnY833W6wM23L441nJaHOq4A"
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJwcml0eSIsImlhdCI6MTcyOTE4NTg2OSwiZXhwIjoxNzI5NzkwNjY5fQ.5gLQPsNoUkj7jSO-BubFCLAYTZh_tDJWNLDWxkBNBQg"
 }
 
 
 ###
 
-DELETE http://localhost:4000/logout
+DELETE http://localhost:6000/logout
 Content-Type: application/json
 
 {
