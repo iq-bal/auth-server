@@ -40,6 +40,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 
 ---
 
+```
 ### Understanding JWT and Its Usage
 
 You can explore [this JWT Playground](https://jwt.io/) to see how each section of a JWT works. Just copy and paste a JWT there to examine the individual components:
@@ -67,6 +68,7 @@ For example, consider a **banking system** that runs multiple servers. If the se
 Since all servers can verify the **JWT signature** using the same secret key, they can trust the token without requiring additional login steps. This enables smooth, secure session management across multiple servers.
 
 ---
+```
 
 ### **JWT Workflow: Authentication and Authorization**
 
