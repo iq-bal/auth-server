@@ -1,0 +1,41 @@
+# use rest client extentsion in vscode
+
+POST http://localhost:4000/register
+Content-Type: application/json
+
+{
+    "username":"prity",
+    "password":"12345"
+}
+
+###
+
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "username":"prity",
+    "password":"12345"
+}
+
+###
+GET http://localhost:4000/protected
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJwcml0eSIsImlhdCI6MTcyOTE4Mjc1NCwiZXhwIjoxNzI5MTgyNzY5fQ.LKNQMWa6UWVCqEu4x0Tb1NH4LaUxzGtiXyXEn5pFk_0
+
+###
+POST http://localhost:4000/token
+Content-Type: application/json
+
+{
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJwcml0eSIsImlhdCI6MTcyOTE4MzAxNCwiZXhwIjoxNzI5Nzg3ODE0fQ.gSWxlazRNOtVn2NRyPqHnY833W6wM23L441nJaHOq4A"
+}
+
+
+###
+
+DELETE http://localhost:4000/logout
+Content-Type: application/json
+
+{
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJwcml0eSIsImlhdCI6MTcyOTE4MzAxNCwiZXhwIjoxNzI5Nzg3ODE0fQ.gSWxlazRNOtVn2NRyPqHnY833W6wM23L441nJaHOq4A"
+}
