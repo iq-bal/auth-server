@@ -2,10 +2,20 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const { findUser, users } = require("./users");
 dotenv.config();
+
+const Redis = require("redis");
+// Redis client setup
+const redisClient = Redis.createClient();
+redisClient.connect();
+
 const app = express();
+app.use(cors());
 app.use(express.json());
+
+const REFRESH_TOKEN_EXPIRATION = 7 * 24 * 3600; // Refresh token expires in 7d
 
 const refreshTokens = []; // Temporary storage for refresh tokens
 
@@ -71,8 +81,16 @@ app.post("/login", async (req, res) => {
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    refreshTokens.push(refreshToken);
 
+    // Store the refresh token in app
+    // refreshTokens.push(refreshToken);
+
+    // Store the refresh token in Redis with expiration
+    await redisClient.setEx(
+      `refreshToken:${user.username}`,
+      REFRESH_TOKEN_EXPIRATION,
+      refreshToken
+    );
     res.json({ accessToken, refreshToken });
   } catch (error) {
     console.error("Error in /login:", error);
@@ -85,14 +103,29 @@ app.post("/token", async (req, res) => {
   try {
     const { refreshToken } = req.body;
 
-    if (!refreshToken || !refreshTokens.includes(refreshToken)) {
-      return res.status(403).json({ message: "Invalid refresh token" });
+    if (!refreshToken) {
+      return res.status(403).json({ message: "Refresh token is required" });
     }
 
+    // Check if the refresh token exists in Redis
+    const storedRefreshToken = await redisClient.get(
+      `refreshToken:${jwt.decode(refreshToken).username}`
+    );
+
+    if (!storedRefreshToken || storedRefreshToken !== refreshToken) {
+      return res
+        .status(403)
+        .json({ message: "Invalid or expired refresh token" });
+    }
+
+    console.log("cache hit");
+
+    // Verify the refresh token
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err)
         return res.status(403).json({ message: "Invalid refresh token" });
 
+      // Generate new access token
       const newAccessToken = generateAccessToken({
         id: user.id,
         username: user.username,
